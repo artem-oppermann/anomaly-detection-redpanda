@@ -37,7 +37,11 @@ raw_data_consumer = KafkaConsumer('raw-data', bootstrap_servers='localhost:9092'
 data = []
 time_steps = []
 for i, msg in enumerate(raw_data_consumer):
-    value = float(msg.value.decode('utf-8'))
+    
+    # Decode the JSON string to a Python dictionary 
+    decoded_msg =  json.loads(msg.value.decode('utf-8'))
+    
+    value = decoded_msg["value"]
     data.append([value])
     time_steps.append(i)  # Assuming each data point corresponds to a time-step
 
